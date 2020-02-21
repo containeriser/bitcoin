@@ -1,0 +1,20 @@
+name: Daily Image Build
+
+on:
+  schedule:
+  - cron: "0 0 * * *"
+  push:
+    branches: [master]
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Login to Package Repository
+        run: echo '${{ secrets.DOCKERHUB_PASSWORD }}' | docker login --username '${{ secrets.DOCKERHUB_USERNAME }}' --password-stdin
+
+      - name: Run Build Script
+        run: bash build.sh
