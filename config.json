@@ -1,0 +1,4 @@
+{
+  "upstream_github_repo": "https://github.com/bitcoin/bitcoin",
+  "package_name": "containeriser/bitcoin"
+}

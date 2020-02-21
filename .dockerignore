@@ -1,0 +1,11 @@
+*.md
+*.yaml
+COPYING
+.github/
+.tx/
+contrib/
+depends/
+doc/
+ci/
+build_msvc/
+.*
