@@ -1,4 +1,7 @@
 {
   "upstream_github_repo": "https://github.com/bitcoin/bitcoin",
-  "package_name": "containeriser/bitcoin"
+  "package_name": "containeriser/bitcoin",
+  "datadir_name": ".bitcoin",
+  "config_name": "bitccoin.conf",
+  "daemon_name": "bitcoind"
 }

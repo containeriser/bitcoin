@@ -15,27 +15,33 @@ RUN groupadd -g ${GROUP_ID} node && useradd -u ${USER_ID} -g node -s /bin/bash -
 
 RUN set -ex \
 	&& apt-get update \
-        && apt-get install software-properties-common build-essential libtool autotools-dev automake pkg-config libssl-dev libevent-dev bsdmainutils python3 git libboost-all-dev gosu -y \
+        && apt-get install software-properties-common build-essential libtool autotools-dev automake pkg-config libssl-dev libevent-dev bsdmainutils python3 git libboost-all-dev gosu jq -y \
         && add-apt-repository ppa:bitcoin/bitcoin \
         && apt-get update \
         && apt-get install libdb4.8-dev libdb4.8++-dev -y \
 	&& rm -rf /var/lib/apt/lists/*
 
-WORKDIR /node
-COPY . /node/src
+WORKDIR $HOME/
 
-RUN echo PATH=\"\$HOME/bin:\$PATH\" >> .bash_profile
+# Copy Config Files
+COPY config.json $HOME/config.json
 
-WORKDIR /node/src
+# Copy Startup Scripts
+ADD ./bin /usr/local/bin
+
+# Copy Source Code
+COPY tmp/repo $HOME/src
+
+# Compile Source Code
+WORKDIR $HOME/src
 RUN ./autogen.sh && ./configure --with-incompatible-bdb
 RUN make -j $(nproc) install
 
 ADD ./bin /usr/local/bin
 
-VOLUME ["/node"]
+VOLUME ["$HOME"]
 
-WORKDIR /node
-
+WORKDIR $HOME/
 COPY docker-entrypoint.sh /usr/local/bin/
 ENTRYPOINT ["docker-entrypoint.sh"]
 

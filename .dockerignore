@@ -1,11 +1,10 @@
 *.md
 *.yaml
-COPYING
+tmp/repo/COPYING
 .github/
-.tx/
-contrib/
-depends/
-doc/
-ci/
-build_msvc/
+tmp/repo/.tx/
+tmp/repo/depends/
+tmp/repo/ci/
+tmp/repo/build_msvc/
+tmp/repo/.*
 .*

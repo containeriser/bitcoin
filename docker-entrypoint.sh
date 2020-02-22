@@ -9,8 +9,8 @@ fi
 
 # allow the container to be started with `--user`
 if [ "$1" = 'oneshot' -a "$(id -u)" = '0' ]; then
-	chown -R quebecoin .
-	exec gosu quebecoin "$0" "$@"
+	chown -R node .
+	exec gosu node "$0" "$@"
 fi
 
 exec "$@"

@@ -2,7 +2,6 @@
 
 set -ex
 
-# Generate quebecoin.conf
 init
 
 if [ $# -gt 0 ]; then
@@ -11,4 +10,5 @@ else
     args=("-rpcallowip=::/0")
 fi
 
-exec quebecoind "${args[@]}"
+DAEMON_NAME=$(jq -r .daemon_name $HOME/config.json)
+exec $DAEMON_NAME "${args[@]}"

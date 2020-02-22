@@ -1,43 +1,25 @@
 #!/bin/bash
-
 set -ex
 
-# This shouldn't be in the Dockerfile or containers built from the same image
-# will have the same credentials.
-if [ ! -e "$HOME/.quebecoinv2/quebecoin.conf" ]; then
-    mkdir -p $HOME/.quebecoinv2
 
-    echo "Creating quebecoin.conf"
+DATADIR_NAME=$(jq -r .datadir_name $HOME/config.json)
+CONFIG_NAME=$(jq -r .config_name $HOME/config.json)
+
+if [ ! -e "$HOME/$DATADIR_NAME/$CONFIG_NAME" ]; then
+    mkdir -p $HOME/$DATADIR_NAME
+
+    echo "Creating $CONFIG_NAME"
 
     # Seed a random password for JSON RPC server
-    cat <<EOF > $HOME/.quebecoinv2/quebecoin.conf
+    cat <<EOF > $HOME/$DATADIR_NAME/$CONFIG_NAME
 disablewallet=${DISABLEWALLET:-1}
 printtoconsole=${PRINTTOCONSOLE:-1}
 rpcuser=${RPCUSER:-bitcoinrpc}
-addnode=70.30.211.86
-addnode=2001:19f0:5:4b18:5400:1ff:fe70:d45a
-addnode=45.77.218.240
-addnode=188.0.43.105	
-addnode=138.68.176.27
-addnode=77.247.155.172
-addnode=96.41.91.147	
-addnode=144.202.58.235	
-addnode=188.0.42.220	
-addnode=66.42.87.99	
-addnode=206.189.113.92
-addnode=2a02:181f:0:80e5:54c5:fb7d:c74b:70c9	
-addnode=85.15.179.171
-addnode=76.71.228.72
-addnode=203.220.21.49
-addnode=76.30.247.15
-addnode=2001:48f8:28:fba:5ded:6f88:6b4:c79e	
-addnode=64.228.17.51
-addnode=coinswap.poolswitch.pw
 rpcpassword=${RPCPASSWORD:-`dd if=/dev/urandom bs=33 count=1 2>/dev/null | base64`}
 EOF
 
 fi
 
-cat $HOME/.quebecoinv2/quebecoin.conf
+cat $HOME/$DATADIR_NAME/$CONFIG_NAME
 
 echo "Initialization completed successfully"
