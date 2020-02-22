@@ -16,12 +16,11 @@ cd tmp/repo
 git branch -r | awk '{print $1}' | awk -F/ '{print "remote="$1"; branch="$2";" }' | while read l
 do eval $l
     git checkout -b $branch $remote/$branch
-
-    cd ../../
     LAST_COMMIT=$(git log -n1 --format="%h")
     echo "Checked out Branch $branch";
     echo "Using Commit $LAST_COMMIT";
 
+    cd ../../
     echo "Running Build"
     docker build -t $DOCKER_PACKAGE_NAME:$LAST_COMMIT .
     docker build -t $DOCKER_PACKAGE_NAME:$branch .
